@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="default/default">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${article.title}"></title>
+    <link href="/css/mcss/read.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wcf-container" layout:fragment="content">
+    <article class="main-content post-page">
+        <div class="post-header">
+            <h1 class="post-title" th:text="${article.title}"></h1>
+            <!--作者的头像-->
+            <div class="col-md-1">
+                <img class="img-circle img-responsive" id="author-avatar"
+                     th:src="${author!=null and author.facePath !=null }?${author.facePath}:'/image/face/default.jpg'"
+                     th:title="${author!=null and author.username !=null }?${author.username}:'未知'"/>
+            </div>
+            <div class="post-data col-md-6">
+                <a href="#" id="author-name" th:text="${author!=null and author.username !=null }?${author.username}:'未知'"></a>
+                <time th:text="'&nbsp;&nbsp;发布于&nbsp;&nbsp;'+ ${utils.fmtDate(article.createTime)}"></time>
+                <th:block th:text="'&nbsp;&nbsp;评论&nbsp;&nbsp;'+${article.commentsNum ?: 0}"/>
+                <th:block th:text="'&nbsp;&nbsp;阅读&nbsp;&nbsp;'+ ${article.hits}"/>
+            </div>
+            <div class="col-md-5">
+                <input id="stars" type="hidden" th:value="${article.stars}"/>
+                <a class="col-md-6 like" th:onclick="'star('+${article.id}+')'">
+                    <span class="fa fa-heart-o like-flag" id="like-flag"
+                          th:text="'&nbsp;喜欢&nbsp;|&nbsp;&nbsp;'+${article.stars}"></span>
+                </a>
+            </div>
+        </div>
+        <div id="post-content" class="post-content">
+            <p class="post-tags" th:utext="${utils.showTages(article.keywords)}"></p>
+            <th:block th:utext="${utils.showArticle(article.text)}"/>
+            <p class="post-info">
+                本站文章均为原创或翻译，转载必须标明出处<br/>最后编辑时间为:
+                <th:block th:text="${utils.fmtDate(article.modifyTime)}"/>
+            </p>
+        </div>
+    </article>
+    <div th:replace="default/insert::sweetalert2"></div>
+    <script>
+        function star(id) {
+            var stars=$("#stars").val();
+            $.post("/read/all/article/star", {
+                    "id": id,
+                    "stars": stars
+                },
+                function (result) {
+                    if (result && result.success) {
+                        var newStars=result.msg;
+                        document.getElementById("like-flag").innerHTML = '&nbsp;喜欢&nbsp;|&nbsp;&nbsp;' + newStars;
+                        $("#stars").val(newStars);
+                    }
+                });
+        }
+    </script>
+    <div th:insert="~{show/read/comments::comments}"></div>
+</div>
+
+</body>
+</html>

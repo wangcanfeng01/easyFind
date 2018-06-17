@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default/default">
+<head>
+    <title>博客-分享你的喜悦</title>
+    <link href="/css/mcss/read.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wcf-content" layout:fragment="content">
+    <div id="wrapper">
+        <div th:insert="~{show/read/left::blog-left('center')}"></div>
+        <div class="read-management-container">
+            <div class="col-md-12">
+                <h4>管理中心</h4>
+            </div>
+            <div class="col-md-4">
+                <div class="mini-stat clearfix bx-shadow bg-info">
+                    <span class="mini-stat-icon"><i class="fa fa-save" aria-hidden="true"></i></span>
+                    <div class="mini-stat-info text-right">
+                        发布了<span th:text="${statistic.articles}"></span>篇文章
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="mini-stat clearfix bx-shadow bg-danger">
+                    <span class="mini-stat-icon"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                    <div class="mini-stat-info text-right">
+                        获得了<span th:text="${statistic.hits}"></span>次浏览
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="mini-stat clearfix bx-shadow bg-success">
+                    <span class="mini-stat-icon"><i class="fa fa-commenting-o" aria-hidden="true"></i></span>
+                    <div class="mini-stat-info text-right">
+                        收到了<span th:text="${statistic.comments}"></span>条留言
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">近期文章</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div th:if="${articles}== null">
+                            <div class="alert alert-warning">
+                                近期未发布文章
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item" th:each="article:${articles}">
+                            <span class="badge bg-primary" th:title="${article.hits}+'次浏览'"
+                                  th:text="${article.hits}"></span>
+                                <a target="_blank" th:href="${utils.articleLink(article.titleSimple)}"
+                                   th:text="${article.title}"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">近期留言</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div th:if="${comments}== null">
+                            <div class="alert alert-warning">
+                                还没有收到留言.
+                            </div>
+                        </div>
+                        <ul class="list-group" th:if="${comments}!= null">
+                            <li class="list-group-item" th:each="comment:${comments}">
+                                <p th:text="${utils.fmtDate(comment.createTime)}+' '+${comment.author}+' 发表评论:'"></p>
+                                <p th:utext="${utils.showComment(comment.text)}"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">操作日志</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div th:if="${operations}== null">
+                            <div class="alert alert-warning">
+                                近期无操作日志
+                            </div>
+                        </div>
+                        <ul class="list-group" th:if="${operations}!= null">
+                            <li class="list-group-item" th:each="operation:${operations}">
+                                <p th:text="${operation.ip}+' : '+${utils.fmtDate(operation.createTime)}+'-'
+                                +${operation.author}+'-'+${operation.action}"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WCF相册</title>
+    <link rel="shortcut icon" th:href="@{/image/home.jpg}"/>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/ocss/reset.css" media="screen"/>
+    <link rel="stylesheet" href="css/ocss/style.css" media="screen"/>
+    <link rel="stylesheet" href="css/ocss/css3_3d.css" media="screen"/>
+    <script type="text/javascript" src="/js/ojs/modernizr.js"></script>
+    <script>
+
+        if (!Modernizr.csstransforms) {
+            $(document).ready(function () {
+                $(".close").text("Back to top");
+            });
+        }
+    </script>
+</head>
+<body>
+<div th:insert="~{default/header :: nav}"><span class="sr-only">导航栏目</span></div>
+<div id="container" style="padding: 0px;padding-top: 5%">
+    <ul id="grid" class="group">
+        <li>
+            <div class="details">
+                <h3>Lanterns</h3>
+                <a class="more" href="#info1">view details</a>
+            </div>
+            <a class="more" href="#info1"><img src="image/photopage/lanterns.jpg"/></a>
+        </li>
+        <li>
+            <div class="details">
+                <h3>Tree</h3>
+                <a class="more" href="#info2">view details</a>
+            </div>
+            <a href="#info2"><img src="image/photopage/tree.jpg"/></a>
+        </li>
+        <li class="end">
+            <div class="details">
+                <h3>Cable Car</h3>
+                <a class="more" href="#info3">view details</a>
+            </div>
+            <a href="#info3"><img src="image/photopage/cablecar.jpg"/></a>
+        </li>
+        <li>
+            <div class="details">
+                <h3>London Eye</h3>
+                <a class="more" href="#info4">view details</a>
+            </div>
+            <a href="#info4"><img src="image/photopage/londoneye.jpg"/></a>
+        </li>
+        <li>
+            <div class="details">
+                <h3>Golden Statue</h3>
+                <a class="more" href="#info5">view details</a>
+            </div>
+            <a href="#info5"><img src="image/photopage/statue.jpg"/></a>
+        </li>
+        <li class="end">
+            <div class="details">
+                <h3>Under the Bridge</h3>
+                <a class="more" href="#info6">view details</a>
+            </div>
+            <a href="#info6"><img src="image/photopage/bridge.jpg"/></a>
+        </li>
+        <li>
+            <div class="details">
+                <h3>Pregnant Maiden</h3>
+                <a class="more" href="#info7">view details</a>
+            </div>
+            <a href="#info7"><img src="image/photopage/maiden.jpg"/></a>
+        </li>
+        <li>
+            <div class="details">
+                <h3>Clouds of Doom</h3>
+                <a class="more" href="#info8">view details</a>
+            </div>
+            <a href="#info8"><img src="image/photopage/clouds.jpg"/></a>
+        </li>
+        <li class="end">
+            <div class="details">
+                <h3>Silver Statue</h3>
+                <a class="more" href="#info9">view details</a>
+            </div>
+            <a href="#info9"><img src="image/photopage/statue2.jpg"/></a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>WCF简介</title>
+    <link rel="shortcut icon" th:href="@{/image/home.jpg}"/>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--增加reveal相关-->
+    <link rel="stylesheet" href="/webjars/reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="/webjars/reveal.js/css/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="/webjars/reveal.js/lib/css/zenburn.css">
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '/webjars/reveal.js/css/print/pdf.css' : '/webjars/reveal.js/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <style>
+        p {
+            color: rgba(38, 12, 12, 0.91);
+            font-family: 微软雅黑;
+
+        }
+
+    </style>
+</head>
+<body>
+<div th:insert="~{default/header :: nav}"><span class="sr-only">导航栏目</span></div>
+<audio autoplay loop preload="auto">
+    <source src="music/love.mp3" >
+    您的浏览器不支持 audio 元素。
+</audio>
+<div class="reveal">
+    <div class="slides">
+        <section data-background="image/bg/love1.jpg">
+            <p style="font-size: 25px">若逢新雪初霁，满月当空，下面平铺着皓影，上面流转着亮银，而你带笑地向我走来，月色和雪色之间，你是第三种绝色</p>
+            <p class="fragment">能遇见你---王爱娜</p>
+            <p class="fragment">真是太好了!</p>
+        </section>
+
+        <section data-background="image/bg/love12.jpg">
+            <p>我是一个天马行空的人，有时候说话还特别跳跃，还容易说过就忘记</p>
+            <p class="fragment">我虽然也有不快乐的时候，但是很短暂，短暂的像鱼的记忆</p>
+            <p class="fragment" style="color: #f3c218">而像我这样的人，有些话要藏很久</p>
+            <p class="fragment current-visible" style="color: #f3c218">但我还是觉得这个时候应该主动一点</p>
+        </section>
+
+        <section data-background="image/bg/love5.jpg">
+            <p>谢谢你，陪我聊了这么久</p>
+            <p>很开心，我成为了你的朋友</p>
+            <p class="fragment">期待你，可以在我面前卸下坚强的外表</p>
+        </section>
+
+        <section data-background="image/bg/love7.jpg">
+            <p>我猜你是一个坚强又容易受伤的女孩子</p>
+            <p class="fragment">会受伤，会流泪，会隐藏</p>
+            <p class="fragment">希望在你难受的时候能够可以想起我</p>
+            <p class="fragment">如果我可以帮你的话，我会不遗余力的</p>
+            <p class="fragment">如果我不能帮助你的话，我也一定会好好倾听的</p>
+        </section>
+
+        <section data-background="image/bg/love9.jpg">
+            <p>我知道，我已经是你的朋友</p>
+            <p>可是渐渐的，我发现我还想把我心里想的都告诉你听</p>
+            <p class="fragment">我想和你在一起，看着你笑</p>
+        </section>
+
+        <section data-background="image/bg/love8.jpg">
+            <p>遇见你是一种缘分，也是一种幸运</p>
+            <blockquote style="border: solid;background-color: rgba(241,241,241,0.57);">
+                <p style="color: #252525">it is an extraordinary thing to meet someone
+                    who you can bare your soul to and who will accept you for what you are
+                </p>
+
+            </blockquote>
+        </section>
+
+        <section data-background="image/bg/love10.jpg">
+            <p class="fragment" style="font-size: 35px"> 梦见过你明亮的眼睛，风也会吹起你的衣角，楚楚动人的样子</p>
+            <p class="fragment" style="font-size: 35px">我想我再没有办法保持沉默，也没有办法再隐藏我对你的喜欢</p>
+            <p class="fragment" style="font-size: 35px">你相信命运吗，虽然你迟到了，但你还是来了@_@!</p>
+            <p class="fragment" style="font-size: 35px"> 无论如何，感谢命运让我遇到你</p>
+        </section>
+        <section data-background="image/bg/love11.jpg">
+            <p>虽然我不是无所不能，但我可以尽我所能</p>
+            <p class="fragment">虽然我不能爱你多一点，但我可以爱你久一点</p>
+            <p class="fragment">做我<span style="font-size: 55px">女</span>朋友吧，在你最美的年纪，最可爱的年纪</p>
+        </section>
+    </div>
+</div>
+
+<script src="/webjars/reveal.js/lib/js/head.min.js"></script>
+<script src="/webjars/reveal.js/js/reveal.js"></script>
+
+<script>
+
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        center: true,
+        mouseWheel:true,
+        autoSlide:3000,
+        dependencies: [
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {src: '/webjars/reveal.js/plugin/notes/notes.js', async: true},
+            {
+                src: '/webjars/reveal.js/plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            }
+        ]
+    });
+
+    function wcf1() {
+        window.location.href = "?transition=convex#/transitions";
+    }
+
+    //设置主题样式
+    function wcf2() {
+        document.getElementById('theme').setAttribute('href', '/webjars/reveal.js/css/theme/solarized.css');
+        return false;
+    }
+
+    wcf1();
+    wcf2();
+</script>
+</body>
+</html>

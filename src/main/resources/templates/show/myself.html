@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>WCF简介</title>
+    <link rel="shortcut icon" th:href="@{/image/home.jpg}"/>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--增加reveal相关-->
+    <link rel="stylesheet" href="/webjars/reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="/webjars/reveal.js/css/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="/webjars/reveal.js/lib/css/zenburn.css">
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '/webjars/reveal.js/css/print/pdf.css' : '/webjars/reveal.js/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <style>
+        p {
+            color: rgba(38, 12, 12, 0.91);
+            font-family: 微软雅黑;
+        }
+
+    </style>
+</head>
+<body>
+<div th:insert="~{default/header :: nav}"><span class="sr-only">导航栏目</span></div>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            这个人很懒，什么都没写
+        </section>
+    </div>
+</div>
+
+<script src="/webjars/reveal.js/lib/js/head.min.js"></script>
+<script src="/webjars/reveal.js/js/reveal.js"></script>
+
+<script>
+
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        center: true,
+        dependencies: [
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {src: '/webjars/reveal.js/plugin/notes/notes.js', async: true},
+            {
+                src: '/webjars/reveal.js/plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            }
+        ]
+    });
+
+    function wcf1() {
+        window.location.href = "?transition=convex#/transitions";
+    }
+
+    //设置主题样式
+    function wcf2() {
+        document.getElementById('theme').setAttribute('href', '/webjars/reveal.js/css/theme/solarized.css');
+        return false;
+    }
+
+    wcf1();
+    wcf2();
+</script>
+</body>
+</html>
