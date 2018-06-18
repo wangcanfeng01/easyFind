@@ -52,13 +52,6 @@ public class ArticleActionController extends BaseController {
     @Autowired
     private WcfUserService userService;
 
-    @Value("${super.path}")
-    private String superPath;
-    @Value("${upload.picture.path}")
-    private String picturePath;
-    @Value("${upload.cover.path}")
-    private String coverPath;
-
     /**
      * @param request
      * @return java.lang.String
@@ -320,96 +313,5 @@ public class ArticleActionController extends BaseController {
         return BaseResponse.ok();
     }
 
-    /**
-     *@note 上传文章内图片
-     *@author WCF
-     *@time 2018/6/15 19:08
-     *@since v1.0
-     * @param file
-     *@return com.wcf.hellohome.common.response.BaseResponse
-     **/
-    @PostMapping(value = "article/add/picture")
-    @ResponseBody
-    public BaseResponse onUploadPicture(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty() || !file.getContentType().startsWith("image")) {
-            return BaseResponse.error("图片上传失败");
-        }
-        if (file.getSize() > 1045876) {
-            return BaseResponse.error("图片不能超过1MB");
-        }
-        if (!ObjectUtils.isEmpty(uploadPicture(file, picturePath))) {
-            return BaseResponse.ok();
-        }
-        return BaseResponse.error("图片上传失败");
-    }
 
-    /**
-     *@note 上传封面
-     *@author WCF
-     *@time 2018/6/15 19:08
-     *@since v1.0
-     * @param request
-    * @param articleCover
-    * @param articleId
-     *@return com.wcf.hellohome.common.response.BaseResponse
-     **/
-    @PostMapping(value = "article/add/cover")
-    @ResponseBody
-    public BaseResponse onUploadCover(HttpServletRequest request,
-                                      @RequestParam("articleCover") MultipartFile articleCover,
-                                      @RequestParam("articleId") Integer articleId) {
-        if (articleCover.isEmpty() || !articleCover.getContentType().startsWith("image")) {
-            return BaseResponse.error("图片上传失败");
-        }
-        if (articleCover.getSize() > 1045876) {
-            return BaseResponse.error("图片不能超过1MB");
-        }
-        if (!ObjectUtils.isEmpty(uploadPicture(articleCover, coverPath))) {
-            String fileLink = uploadPicture(articleCover, coverPath);
-            try {
-                articleService.updateArticleCover(articleId, fileLink);
-                operationLogService.insertLog("上传封面",
-                        request.getRemoteAddr(), getUserName(request));
-            } catch (PgSqlException e) {
-                return BaseResponse.error(e);
-            }
-            return BaseResponse.ok();
-        }else {
-            return BaseResponse.error("图片名不能为空");
-        }
-    }
-
-    /**
-     *@note 保存图片
-     *@author WCF
-     *@time 2018/6/15 19:09
-     *@since v1.0
-     * @param file
-    * @param pathStr
-     *@return java.lang.String
-     **/
-    private String uploadPicture(MultipartFile file, String pathStr) {
-        String fileName = file.getOriginalFilename();
-        fileName = fileName.replaceAll("\\\\", "/");
-        String[] arr = fileName.split("/");
-        if (arr.length < 2) {
-            if(!ObjectUtils.isEmpty(arr[0])){
-                fileName=arr[0];
-            }else {
-                return null;
-            }
-        }else {
-            fileName = arr[arr.length - 1];
-        }
-        String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        path = path.replaceAll("\\\\", "/");
-        String filePath = path + superPath + pathStr + fileName;
-        try (InputStream in = file.getInputStream();
-             OutputStream out = new FileOutputStream(filePath)) {
-            IOUtils.copy(in, out);
-        } catch (IOException e) {
-            log.error("Can't upload picture to: " + filePath, e);
-        }
-        return pathStr + fileName;
-    }
 }

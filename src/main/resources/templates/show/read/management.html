@@ -36,18 +36,26 @@
                                 <a th:href="${utils.articleLink(article.titleSimple)}" th:text="${article.title}"></a>
                             </td>
                             <td>
-                                <form th:id="${article.id}" enctype="multipart/form-data">
-                                    <input type="file" th:onchange="'uploadCover('+${article.id}+');'"
-                                           th:id="${article.titleSimple}" style="display:none;"
-                                           name="articleCover" />
-                                    <input type="hidden" name="articleId" th:value="${article!=null}?${article.id}:''">
-                                </form>
-                                <th:block th:if="${article.cover==null}">
+                                <th:block th:if="${article.cover==null or article.cover==''}">
+                                    <form th:id="${article.id}" enctype="multipart/form-data">
+                                        <input type="file" th:onchange="'uploadCover('+${article.id}+');'"
+                                               th:id="${article.titleSimple}" style="display:none;"
+                                               name="articleCover" />
+                                        <input type="hidden" name="updateFlag" value="0"/>
+                                        <input type="hidden" name="articleId" th:value="${article!=null}?${article.id}:''"/>
+                                    </form>
                                     <a href="javascript:void(0)" th:onclick="'coverClick(\''+${article.titleSimple}+'\');'">
                                         <img src="/image/article/upload/upload.png" title="上传封面"/>
                                     </a>
                                 </th:block>
-                                <th:block th:if="${article.cover!=null}">
+                                <th:block th:if="${article.cover!=null and article.cover!=''}">
+                                    <form th:id="${article.id}" enctype="multipart/form-data">
+                                        <input type="file" th:onchange="'uploadCover('+${article.id}+');'"
+                                               th:id="${article.titleSimple}" style="display:none;"
+                                               name="articleCover" />
+                                        <input type="hidden" name="updateFlag" value="1"/>
+                                        <input type="hidden" name="articleId" th:value="${article!=null}?${article.id}:''"/>
+                                    </form>
                                     <a href="javascript:void(0)" th:onclick="'coverClick(\''+${article.titleSimple}+'\');'">
                                         <img th:src="${article.cover}" title="更换封面"/>
                                     </a>
@@ -129,7 +137,10 @@
                     if (result && result.success) {
                         tale.alertOkAndReload(result.msg ||'上传成功');
                     } else {
-                        tale.alertOkAndReload(result.msg || '上传失败');
+                        tale.alertError(result.msg || '上传失败');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 700);
                     }
                 },
                 error: function () {}

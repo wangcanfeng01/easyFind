@@ -570,7 +570,7 @@ ul.actions.vertical.small li:first-child {
 .post > a.image.featured {
     overflow: hidden;
     width: 100%;
-    height: 100%;
+    height: auto;
     border: 1px solid black;
     border-radius: 14px;
 }
@@ -911,12 +911,12 @@ body.single #flex-box {
     margin: 0 0 1em 0;
     overflow: hidden;
     position: relative;
-    width: 4em;
+    width: 100%;
 }
 
 #intro .logo img {
     display: block;
-    width: 80%;
+    width: 100%;
     height: auto;
     /*border-radius: 100%;*/
 }
@@ -924,10 +924,12 @@ body.single #flex-box {
 #intro header h2 {
     font-size: 2em;
     font-weight: 900;
+    text-align: center;
 }
 
 #intro footer p {
     font-size: 0.8em;
+    text-align: center;
 }
 
 #comments .logo {

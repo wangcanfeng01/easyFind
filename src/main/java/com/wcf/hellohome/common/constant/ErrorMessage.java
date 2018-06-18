@@ -32,7 +32,12 @@ public enum ErrorMessage {
     INSERT_OPERATION_ERROR("00000011", "Insert operation data into database failed","插入操作日志异常"),
     SELECT_OPERATION_ERROR("00000012", "Select operation data from database failed","搜索操作日志异常"),
     UPDATE_OPERATION_ERROR("00000013", "Update operation data into database failed","更新操作日志异常"),
-    DELETE_OPERATION_ERROR("00000014", "Delete operation data from database failed","删除操作日志异常");
+    DELETE_OPERATION_ERROR("00000014", "Delete operation data from database failed","删除操作日志异常"),
+
+    INSERT_PICTURE_ERROR("00000015", "Insert operation data into database failed","插入图片异常"),
+    SELECT_PICTURE_ERROR("00000016", "Select operation data from database failed","搜索图片异常"),
+    UPDATE_PICTURE_ERROR("00000017", "Update operation data into database failed","更新图片异常"),
+    DELETE_PICTURE_ERROR("00000018", "Delete operation data from database failed","删除图片异常");
 
 
     ErrorMessage(String code, String reason, String chinese) {
