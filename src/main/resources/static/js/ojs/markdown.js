@@ -1534,10 +1534,10 @@ else
         var checkEscape = function (key) {
             var code = (key.charCode || key.keyCode);
             if (code === 27) {
-                close(true,null);
+                close(true, null);
             }
         };
-        var close = function (isCancel,success) {
+        var close = function (isCancel, success) {
             util.removeEvent(doc.body, "keydown", checkEscape);
             var text = input.value;
 
@@ -1550,24 +1550,25 @@ else
                 //     text = 'http://' + text;
             }
             dialog.parentNode.removeChild(dialog);
-            if(image){
-                if(text.indexOf("\\")){
-                   var arr= text.split("\\");
-                   var length=arr.length;
-                   if(length<2){
-                       text=text;
-                   }else {
-                       text="/image/article/upload/"+arr[length-1];
-                   }
+            if (image) {
+                if (text != null && text.indexOf("\\")) {
+                    var arr = text.split("\\");
+                    var length = arr.length;
+                    if (length < 2) {
+                        text = text;
+                    } else {
+                        text = "/image/article/upload/" + arr[length - 1];
+                    }
                 }
             }
 
             if (success && success.success) {
                 callback(text);
+            } else if (success != null && success.msg != null) {
+                callback(success.msg);
             }else {
-                callback(success.msg || '上传失败');
+                callback(null);
             }
-
             return false;
         };
 
@@ -1582,19 +1583,19 @@ else
             form.name = "uploadForm";
             form.id = "uploadForm";
             form.onsubmit = function () {
-                return close(false,null);
+                return close(false, null);
             };
             dialog.appendChild(form);
             input = doc.createElement("input");
             if (image) {
-                form.enctype="multipart/form-data";
-                input.type="text";
-                input.name="textField";
-                input.id="textField";
-                input.className="md-textfield";
-                form.innerHTML="<input type='file' name='file' class='md-file' id='file' " +
+                form.enctype = "multipart/form-data";
+                input.type = "text";
+                input.name = "textField";
+                input.id = "textField";
+                input.className = "md-textfield";
+                form.innerHTML = "<input type='file' name='file' class='md-file' id='file' " +
                     " onchange=\"document.getElementById('textField').value=this.value\" />";
-            }else {
+            } else {
                 input.type = "input";
                 input.style.width = "320px";
                 input.value = defaultInputText;
@@ -1616,11 +1617,12 @@ else
                     contentType: false,
                     dataType: 'json',
                     success: function (result) {
-                        success=result;
+                        success = result;
                     },
-                    error: function () {}
+                    error: function () {
+                    }
                 });
-                return close(false,success);
+                return close(false, success);
             };
             if (image) {
                 okButton.innerHTML = "上传";
@@ -1632,7 +1634,7 @@ else
             cancelButton.className = "btn btn-warning";
             cancelButton.style.marginTop = '10px';
             cancelButton.onclick = function () {
-                return close(true,null);
+                return close(true, null);
             };
             cancelButton.innerHTML = cancel;
             form.appendChild(okButton);

@@ -185,9 +185,9 @@ public interface WcfArticleInfoMapper {
      *@return int
      **/
     @Insert("INSERT INTO info_article(title, title_simple, cover, create_time, modify_time, text,author, keywords,status," +
-            " categories, hits,stars, comments_num,allow_comment, allow_see ) VALUES(#{title},#{titleSimple},#{createTime}," +
-            "#{modifyTime},#{text},#{author},#{keywords},#{status}," +
-            "#{categories},#{hits},#{commentsNum},#{allowComment},#{allowSee});")
+            " categories, hits,stars, comments_num,allow_comment, allow_see ) VALUES(#{title}, #{titleSimple}," +
+            " #{cover}, #{createTime}, #{modifyTime},#{text},#{author},#{keywords},#{status}," +
+            "#{categories},#{hits},#{stars},#{commentsNum},#{allowComment},#{allowSee});")
     int insertArticle(WcfArticleInfo articleInfo)throws Exception;
 
     /**

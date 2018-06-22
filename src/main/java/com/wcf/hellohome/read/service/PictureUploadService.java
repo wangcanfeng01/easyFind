@@ -33,6 +33,16 @@ public interface PictureUploadService {
     List<PictureUploadInfo> getPictureInfos()throws PgSqlException;
 
     /**
+     * @param
+     * @return java.util.List<com.wcf.hellohome.read.model.PictureUploadInfo>
+     * @note 查询指定图片信息
+     * @author WCF
+     * @time 2018/6/18 15:52
+     * @since v1.0
+     **/
+    PictureUploadInfo getCoverPictureByAid(Integer organisationId) throws PgSqlException;
+
+    /**
      *@note 通过id删除图片
      *@author WCF
      *@time 2018/6/18 15:53

@@ -22,7 +22,7 @@ public interface WcfMetaInfoMapper {
      * @since v1.0
      **/
     @Insert("INSERT INTO info_metas(name, type, cover, description, modify_time,create_time, count)" +
-            "VALUES(#{name},#{type},#{description},#{modifyTime},#{createTime},#{count});")
+            "VALUES(#{name},#{type},#{cover},#{description},#{modifyTime},#{createTime},#{count});")
     void insertMeta(WcfMetaInfo info) throws Exception;
 
     /**
@@ -59,7 +59,8 @@ public interface WcfMetaInfoMapper {
      * @time 2018/6/13 22:25
      * @since v1.0
      **/
-    @Update("UPDATE info_metas SET name=#{name},modify_time=#{modifyTime},create_time=#{createTime},description=#{description} WHERE id = #{id}")
+    @Update("UPDATE info_metas SET name=#{name},modify_time=#{modifyTime},create_time=#{createTime}," +
+            "description=#{description},count = #{count} WHERE id = #{id}")
     void updateMetaById(WcfMetaInfo info) throws Exception;
 
     /**

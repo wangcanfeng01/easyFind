@@ -1,7 +1,6 @@
 package com.wcf.hellohome.read.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.wcf.hellohome.common.constant.ErrorMessage;
 import com.wcf.hellohome.common.constant.WCFConst;
 import com.wcf.hellohome.common.controller.BaseController;
 import com.wcf.hellohome.common.response.BaseResponse;
@@ -18,15 +17,11 @@ import com.wcf.hellohome.read.service.WcfOperationLogService;
 import com.wcf.hellohome.user.model.UserInfo;
 import com.wcf.hellohome.user.service.WcfUserService;
 import lombok.extern.log4j.Log4j2;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +95,7 @@ public class ArticleActionController extends BaseController {
                     articleInfo.setModifyTime(DateUtils.getCurrentUnixTime());
                     articleInfo.setCreateTime(DateUtils.getCurrentUnixTime());
                     articleInfo.setHits(0);
+                    articleInfo.setStars(0);
                     if (ObjectUtils.isEmpty(articleInfo.getStatus())) {
                         articleInfo.setStatus("draft");
                     }
@@ -177,7 +173,7 @@ public class ArticleActionController extends BaseController {
     @PostMapping("/article/modify")
     @ResponseBody
     public BaseResponse modifyArticle(WcfArticleInfo articleInfo, HttpServletRequest request) {
-
+        articleInfo.setModifyTime(DateUtils.getCurrentUnixTime());
         try {
             WcfArticleInfo source = articleService.getContentById(articleInfo.getId());
             //更新分类信息

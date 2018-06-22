@@ -6,8 +6,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class HelloHomeApplication extends SpringBootServletInitializer {
-    public HelloHomeApplication() {
+public class EasySearchApplication extends SpringBootServletInitializer {
+    public EasySearchApplication() {
         super();
         setRegisterErrorPageFilter(false);
     }
@@ -19,10 +19,10 @@ public class HelloHomeApplication extends SpringBootServletInitializer {
      */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(HelloHomeApplication.class);
+        return application.sources(EasySearchApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(HelloHomeApplication.class, args);
+        SpringApplication.run(EasySearchApplication.class, args);
     }
 }

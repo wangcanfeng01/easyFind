@@ -39,7 +39,8 @@
                         </a>
                     </li>
                     <li th:class="${active}=='metas'?'active':''">
-                        <a th:href="@{/read/admin/metas}" th:class="${active}=='metas'?'waves-effect active':'waves-effect'">
+                        <a th:href="@{/read/admin/metas}"
+                           th:class="${active}=='metas'?'waves-effect active':'waves-effect'">
                             <i class="fa fa-tags" aria-hidden="true"></i>
                             <span> 标签/关键词 </span>
                         </a>
@@ -53,7 +54,8 @@
                     </li>
 
                     <li th:class="${avtive}=='list'?'active':''">
-                        <a th:href="@{/read/all/list}" th:class="${avtive}=='list'?'waves-effect active':'waves-effect'">
+                        <a th:href="@{/read/all/list}"
+                           th:class="${avtive}=='list'?'waves-effect active':'waves-effect'">
                             <i class="fa fa-list" aria-hidden="true"></i>
                             <span> 文章列表 </span>
                         </a>
@@ -67,7 +69,8 @@
                         <li>
                             <a th:href="'/read/all/list/'+${category.name}"
                                th:class="${cName==category.name}?'active':''"
-                               th:text="${category.name}"></a>
+                               th:text="${category.name}"
+                               th:title="${category.name}"></a>
                         </li>
                     </th:block>
                 </ul>

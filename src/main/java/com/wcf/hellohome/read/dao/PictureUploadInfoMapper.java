@@ -40,6 +40,18 @@ public interface PictureUploadInfoMapper {
     List<PictureUploadInfo> getPictureInfos() throws Exception;
 
     /**
+     * @param
+     * @return java.util.List<com.wcf.hellohome.read.model.PictureUploadInfo>
+     * @note 查询指定图片信息
+     * @author WCF
+     * @time 2018/6/18 15:52
+     * @since v1.0
+     **/
+    @Select("SELECT id, name, path, author, size, type, organisation_id as organisationId, create_time, modify_time " +
+            "FROM info_picture WHERE organisation_id=#{organisationId} and type='cover'")
+    PictureUploadInfo getPictureInfoByIdAndName(@Param("organisationId") Integer organisationId) throws Exception;
+
+    /**
      * @param id
      * @return void
      * @note 通过id删除图片

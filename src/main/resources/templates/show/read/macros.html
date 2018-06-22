@@ -5,7 +5,7 @@
     <!--通过PageInfo中的属性判断相关值-->
     <th:block th:if="${pageInfo.hasPreviousPage}">
         <li class="prev">
-            <button class="btn btn-default" >
+            <button class="btn btn-default">
                 <a th:href="@{'/'+${prefix}+'/'+${pageInfo.prePage}}"
                    th:text="${prevText}"></a>
             </button>

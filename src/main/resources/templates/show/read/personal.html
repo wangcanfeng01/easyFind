@@ -90,7 +90,12 @@
                     <!-- Post -->
                     <article class="post" th:each="article:${articles}">
                         <a th:href="${utils.articleLink(article.titleSimple)}" class="image featured">
-                            <img th:src="${article.cover}" alt=""/>
+                            <th:block th:if="${article.cover==null}">
+                                <img src="/image/article/cover/default.jpg" alt=""/>
+                            </th:block>
+                            <th:block th:if="${article.cover!=null}">
+                                <img th:src="${article.cover}" alt=""/>
+                            </th:block>
                         </a>
                         <header>
                             <div class="title">
@@ -113,7 +118,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <time class="fa fa-clock-o" th:text="'&nbsp;'+${utils.fmtDate(article.createTime)}"></time>
+                                    <time class="fa fa-clock-o"
+                                          th:text="'&nbsp;'+${utils.fmtDate(article.createTime)}"></time>
                                 </li>
                                 <li><span class="fa fa-eye" th:text="'&nbsp;'+${article.hits}"></span></li>
                                 <li><span class="fa fa-heart" th:text="'&nbsp;'+${article.stars}"></span></li>

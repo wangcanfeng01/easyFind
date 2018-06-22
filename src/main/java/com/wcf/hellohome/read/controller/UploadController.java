@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * @author WCF
@@ -80,9 +77,9 @@ public class UploadController extends BaseController {
             return BaseResponse.error("图片不能超过1MB");
         }
         PictureUploadInfo info = new PictureUploadInfo();
-        if (!ObjectUtils.isEmpty(uploadPicture(file, picturePath, info))) {
+        String fileLink = uploadPicture(file, picturePath, info);
+        if (!ObjectUtils.isEmpty(fileLink)) {
             info.setAuthor(authorName);
-            info.setPath(picturePath);
             info.setSize((int) size);
             info.setType("picture");
             info.setCreateTime(DateUtils.getCurrentUnixTime());
@@ -111,8 +108,7 @@ public class UploadController extends BaseController {
     @ResponseBody
     public BaseResponse onUploadCover(HttpServletRequest request,
                                       @RequestParam("articleCover") MultipartFile articleCover,
-                                      @RequestParam("articleId") Integer articleId,
-                                      @RequestParam("updateFlag") Integer flag) {
+                                      @RequestParam("articleId") Integer articleId) {
         String authorName = getUserName(request);
         if (articleCover.isEmpty() || !articleCover.getContentType().startsWith("image")) {
             return BaseResponse.error("图片上传失败");
@@ -126,16 +122,20 @@ public class UploadController extends BaseController {
         if (!ObjectUtils.isEmpty(fileLink)) {
             try {
                 info.setSize((int) size);
-                info.setPath(coverPath);
                 info.setOrganisationId(articleId);
                 info.setAuthor(authorName);
                 info.setType("cover");
                 info.setCreateTime(DateUtils.getCurrentUnixTime());
                 info.setModifyTime(DateUtils.getCurrentUnixTime());
-                if (1 == flag) {
-                    pictureUploadService.updatePictureInfosById(info);
-                } else {
+                PictureUploadInfo oldInfo = pictureUploadService.getCoverPictureByAid(articleId);
+                if (ObjectUtils.isEmpty(oldInfo)) {
                     pictureUploadService.insertPicture(info);
+                } else {
+                    if(!oldInfo.getName().equals(info.getName())){
+                       deletePictures(oldInfo.getPath());
+                    }
+                    info.setId(oldInfo.getId());
+                    pictureUploadService.updatePictureInfosById(info);
                 }
                 articleService.updateArticleCover(articleId, fileLink);
                 operationLogService.insertLog("上传封面",
@@ -176,12 +176,31 @@ public class UploadController extends BaseController {
         String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         path = path.replaceAll("\\\\", "/");
         String filePath = path + superPath + pathStr + fileName;
+        info.setPath(filePath);
         try (InputStream in = file.getInputStream();
              OutputStream out = new FileOutputStream(filePath)) {
             IOUtils.copy(in, out);
         } catch (IOException e) {
             log.error("Can't upload picture to: " + filePath, e);
+        }catch (Exception e){
+            log.error("Can't upload picture to: " + filePath, e);
         }
         return pathStr + fileName;
+    }
+
+    /**
+     * @param
+     * @return java.lang.String
+     * @note 删除图片
+     * @author WCF
+     * @time 2018/6/18 21:05
+     * @since v1.0
+     **/
+    private void deletePictures(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            file.delete();
+        }
+        return;
     }
 }

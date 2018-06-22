@@ -61,6 +61,24 @@ public class PictureUploadServiceImpl implements PictureUploadService {
     }
 
     /**
+     * @param
+     * @return java.util.List<com.wcf.hellohome.read.model.PictureUploadInfo>
+     * @note 查询指定图片信息
+     * @author WCF
+     * @time 2018/6/18 15:52
+     * @since v1.0
+     **/
+    @Override
+    public PictureUploadInfo getCoverPictureByAid(Integer organisationId) throws PgSqlException {
+        try {
+            return pictureUploadInfoMapper.getPictureInfoByIdAndName(organisationId);
+        } catch (Exception e) {
+            log.error(ErrorMessage.SELECT_PICTURE_ERROR,e);
+            throw new PgSqlException(ErrorMessage.SELECT_PICTURE_ERROR);
+        }
+    }
+
+    /**
      * @param id
      * @return void
      * @note 通过id删除图片
