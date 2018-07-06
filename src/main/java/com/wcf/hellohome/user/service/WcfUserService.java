@@ -1,6 +1,7 @@
 package com.wcf.hellohome.user.service;
 
 import com.wcf.hellohome.exception.PgSqlException;
+import com.wcf.hellohome.exception.UserException;
 import com.wcf.hellohome.user.model.UserInfo;
 
 /**
@@ -18,7 +19,7 @@ public interface WcfUserService {
      * @time 2018/6/12 22:14
      * @since v1.0
      **/
-    boolean addNewUser(UserInfo userInfo) throws PgSqlException;
+    boolean addNewUser(UserInfo userInfo) throws PgSqlException,UserException;
 
 
     /**

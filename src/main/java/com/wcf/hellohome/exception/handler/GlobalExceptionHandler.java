@@ -24,6 +24,7 @@ public class GlobalExceptionHandler {
      **/
     @ExceptionHandler({ Exception.class})
     public ModelAndView processException(Exception exception) {
+        log.error("Exception",exception);
         ModelAndView m = new ModelAndView();
         m.setViewName("error/500");
         m.addObject("error", exception.toString());
@@ -40,6 +41,7 @@ public class GlobalExceptionHandler {
      **/
     @ExceptionHandler({ RuntimeException.class})
     public ModelAndView runtimeException(RuntimeException exception) {
+        log.error("RuntimeException",exception);
         ModelAndView m = new ModelAndView();
         m.setViewName("error/500");
         m.addObject("error", exception.toString());
@@ -56,6 +58,7 @@ public class GlobalExceptionHandler {
      **/
     @ExceptionHandler(value = {IllegalArgumentException.class})
     public ModelAndView illegalArgumentException(IllegalArgumentException e) {
+        log.error("illegalArgumentException",e);
         ModelAndView m = new ModelAndView();
         m.setViewName("error/500");
         m.addObject("error", e.toString());
@@ -73,6 +76,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {NoHandlerFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView noHandlerFoundException(Exception e) {
+        log.error("NOT_FOUND",e);
         ModelAndView m = new ModelAndView();
         m.setViewName("error/404");
         m.addObject("error", e.toString());

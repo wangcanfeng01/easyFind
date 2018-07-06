@@ -58,6 +58,21 @@ public class DateUtils {
         return (int) (epochSecond);
     }
 
+    /**
+     * @param time
+     * @return int
+     * @note 使用时间字符串转成整形时间戳
+     * @author WCF
+     * @time 2018/6/30 11:27
+     * @since v1.0
+     **/
+    public static int toUnixTime(String time) {
+        if (ObjectUtils.isEmpty(time)) {
+            return 0;
+        }
+        return toUnixTime(getTime(time));
+    }
+
 
     /**
      * @param
@@ -83,6 +98,49 @@ public class DateUtils {
     public static String todayZero() {
         LocalDateTime time = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
         return formatter.format(time);
+    }
+
+    /**
+     * @param
+     * @return java.lang.String
+     * @note 当月月初
+     * @author WCF
+     * @time 2018/6/10 20:26
+     * @since v1.0
+     **/
+    public static LocalDateTime thisMonthZero() {
+        LocalDateTime time = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        int days = time.getDayOfMonth();
+        return time.minusDays(days);
+    }
+
+    /**
+     * @param
+     * @return java.lang.String
+     * @note 给定时间点的当月月初
+     * @author WCF
+     * @time 2018/6/10 20:26
+     * @since v1.0
+     **/
+    public static String thisMonthZero(LocalDateTime time) {
+        LocalDateTime localDateTime = time.truncatedTo(ChronoUnit.DAYS);
+        int days = localDateTime.getDayOfMonth();
+        return formatter.format(localDateTime.minusDays(days));
+    }
+
+    /**
+     * @param
+     * @return java.lang.String
+     * @note 给定时间点的当月月初
+     * @author WCF
+     * @time 2018/6/10 20:26
+     * @since v1.0
+     **/
+    public static int thisMonthZeroUnix(LocalDateTime time) {
+        LocalDateTime localDateTime = time.truncatedTo(ChronoUnit.DAYS);
+        int days = localDateTime.getDayOfMonth();
+        localDateTime=localDateTime.minusDays(days);
+        return toUnixTime(localDateTime);
     }
 
     /**
@@ -127,6 +185,20 @@ public class DateUtils {
             log.error("The time string's formatter is not right");
         }
         return localDateTime;
+    }
+
+    /**
+     * @param
+     * @return java.lang.String
+     * @note 获取年份和月份
+     * @author WCF
+     * @time 2018/7/3 22:24
+     * @since v1.0
+     **/
+    public static String getYearAndMonth(LocalDateTime time) {
+        int month = time.getMonth().getValue();
+        int year = time.getYear();
+        return year + "-" + month;
     }
 
 }

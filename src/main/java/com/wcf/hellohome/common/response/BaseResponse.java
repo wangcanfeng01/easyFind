@@ -1,6 +1,5 @@
 package com.wcf.hellohome.common.response;
 
-import com.wcf.hellohome.common.constant.ErrorMessage;
 import com.wcf.hellohome.common.utils.DateUtils;
 import com.wcf.hellohome.exception.BaseException;
 

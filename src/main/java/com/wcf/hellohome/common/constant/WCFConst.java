@@ -13,6 +13,10 @@ public class WCFConst {
     public static final int MAX_PAGE = 1000;
     public static final String NOT_LOGIN_USER="爱学习的朋友";
     /**
+     * 文章删除标志
+     */
+    public static final int DELETE_FLAG=1;
+    /**
      * 通用类型
      */
     public static class Types {

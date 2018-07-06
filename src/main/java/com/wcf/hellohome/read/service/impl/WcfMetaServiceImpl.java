@@ -34,7 +34,7 @@ public class WcfMetaServiceImpl implements WcfMetaService {
      * @since v1.0
      **/
     @Override
-    public void insertMeta(String name, String type, String description) throws PgSqlException {
+    public void insertMeta(String name, String type, String description,String fileLink) throws PgSqlException {
         WcfMetaInfo info = new WcfMetaInfo();
         info.setName(name);
         info.setDescription(description);
@@ -42,6 +42,7 @@ public class WcfMetaServiceImpl implements WcfMetaService {
         info.setModifyTime(DateUtils.getCurrentUnixTime());
         info.setCount(0);
         info.setCreateTime(DateUtils.getCurrentUnixTime());
+        info.setCover(fileLink);
         try {
             mapper.insertMeta(info);
         } catch (Exception e) {
@@ -49,6 +50,7 @@ public class WcfMetaServiceImpl implements WcfMetaService {
             throw new PgSqlException(ErrorMessage.INSERT_META_ERROR);
         }
     }
+
 
     /**
      * @param name
@@ -147,9 +149,37 @@ public class WcfMetaServiceImpl implements WcfMetaService {
     public void updateMetaInfoById(String name, String description, Integer id) throws PgSqlException {
         WcfMetaInfo info = new WcfMetaInfo();
         info.setName(name);
+        info.setId(id);
         info.setDescription(description);
         info.setModifyTime(DateUtils.getCurrentUnixTime());
         updateMetaById(info);
+    }
+
+    /**
+     * @param name
+     * @param description
+     * @param fileLink
+     * @param id
+     * @return void
+     * @note 更新meta信息，包含图片
+     * @author WCF
+     * @time 2018/6/25 22:21
+     * @since v1.0
+     **/
+    @Override
+    public void updateMetaInfoById(String name, String description, String fileLink, Integer id) throws PgSqlException {
+        WcfMetaInfo info = new WcfMetaInfo();
+        info.setName(name);
+        info.setDescription(description);
+        info.setModifyTime(DateUtils.getCurrentUnixTime());
+        info.setCover(fileLink);
+        info.setId(id);
+        try {
+            mapper.updateMetaById2(info);
+        } catch (Exception e) {
+            log.error(ErrorMessage.UPDATE_META_ERROR,e);
+            throw new PgSqlException(ErrorMessage.UPDATE_META_ERROR);
+        }
     }
 
     /**

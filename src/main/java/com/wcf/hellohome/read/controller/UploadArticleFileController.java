@@ -4,6 +4,8 @@ import com.wcf.hellohome.common.controller.BaseController;
 import com.wcf.hellohome.common.response.BaseResponse;
 import com.wcf.hellohome.common.utils.DateUtils;
 import com.wcf.hellohome.common.utils.ObjectUtils;
+import com.wcf.hellohome.common.utils.UploadFileUtils;
+import com.wcf.hellohome.common.utils.UuidUtils;
 import com.wcf.hellohome.exception.PgSqlException;
 import com.wcf.hellohome.read.model.PictureUploadInfo;
 import com.wcf.hellohome.read.service.PictureUploadService;
@@ -31,12 +33,18 @@ import java.io.*;
 @Controller
 @Log4j2
 @RequestMapping("/read/admin")
-public class UploadController extends BaseController {
+public class UploadArticleFileController extends BaseController {
+
     /**
-     * 图片基础路径
+     * 图片资源基础路径
      */
-    @Value("${super.path}")
-    private String superPath;
+    @Value("${static.picture}")
+    private String staticPicturePath;
+    /**
+     * 图片资源备份路径
+     */
+    @Value("${upload.backup.path}")
+    private String backupPicturePath;
     /**
      * 文章内图片相对路径
      */
@@ -67,20 +75,24 @@ public class UploadController extends BaseController {
      **/
     @PostMapping(value = "article/add/picture")
     @ResponseBody
-    public BaseResponse onUploadPicture(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
+    public BaseResponse onUploadPicture(HttpServletRequest request,
+                                        @RequestParam("file") MultipartFile file,
+                                        @RequestParam("idField") Integer articleId) {
         String authorName = getUserName(request);
         if (file.isEmpty() || !file.getContentType().startsWith("image")) {
-            return BaseResponse.error("图片上传失败");
+            return BaseResponse.error("非图片资源，上传失败");
         }
         long size = file.getSize();
         if (size > 1048576) {
             return BaseResponse.error("图片不能超过1MB");
         }
         PictureUploadInfo info = new PictureUploadInfo();
-        String fileLink = uploadPicture(file, picturePath, info);
+        UploadFileUtils uploadFileUtils=new UploadFileUtils(staticPicturePath,backupPicturePath);
+        String fileLink = uploadFileUtils.uploadPicture(file, picturePath, info);
         if (!ObjectUtils.isEmpty(fileLink)) {
             info.setAuthor(authorName);
-            info.setSize((int) size);
+            info.setSize((int) size / 1024);
+            info.setOrganisationId(articleId);
             info.setType("picture");
             info.setCreateTime(DateUtils.getCurrentUnixTime());
             info.setModifyTime(DateUtils.getCurrentUnixTime());
@@ -89,7 +101,7 @@ public class UploadController extends BaseController {
             } catch (PgSqlException e) {
                 return BaseResponse.error(e);
             }
-            return BaseResponse.ok();
+            return BaseResponse.ok(fileLink);
         }
         return BaseResponse.error("图片上传失败");
     }
@@ -111,17 +123,18 @@ public class UploadController extends BaseController {
                                       @RequestParam("articleId") Integer articleId) {
         String authorName = getUserName(request);
         if (articleCover.isEmpty() || !articleCover.getContentType().startsWith("image")) {
-            return BaseResponse.error("图片上传失败");
+            return BaseResponse.error("非图片资源，上传失败");
         }
         long size = articleCover.getSize();
         if (size > 1048576) {
             return BaseResponse.error("图片不能超过1MB");
         }
         PictureUploadInfo info = new PictureUploadInfo();
-        String fileLink = uploadPicture(articleCover, coverPath, info);
+        UploadFileUtils uploadFileUtils=new UploadFileUtils(staticPicturePath,backupPicturePath);
+        String fileLink = uploadFileUtils.uploadPicture(articleCover, coverPath, info);
         if (!ObjectUtils.isEmpty(fileLink)) {
             try {
-                info.setSize((int) size);
+                info.setSize((int) size / 1024);
                 info.setOrganisationId(articleId);
                 info.setAuthor(authorName);
                 info.setType("cover");
@@ -131,8 +144,8 @@ public class UploadController extends BaseController {
                 if (ObjectUtils.isEmpty(oldInfo)) {
                     pictureUploadService.insertPicture(info);
                 } else {
-                    if(!oldInfo.getName().equals(info.getName())){
-                       deletePictures(oldInfo.getPath());
+                    if (!oldInfo.getName().equals(info.getName())) {
+                        uploadFileUtils.deletePictures(oldInfo.getPath());
                     }
                     info.setId(oldInfo.getId());
                     pictureUploadService.updatePictureInfosById(info);
@@ -143,64 +156,13 @@ public class UploadController extends BaseController {
             } catch (PgSqlException e) {
                 return BaseResponse.error(e);
             }
-            return BaseResponse.ok();
+            return BaseResponse.ok(fileLink);
         } else {
             return BaseResponse.error("图片名不能为空");
         }
     }
 
-    /**
-     * @param file
-     * @param pathStr
-     * @param info
-     * @return java.lang.String
-     * @note 保存图片
-     * @author WCF
-     * @time 2018/6/15 19:09
-     * @since v1.0
-     **/
-    private String uploadPicture(MultipartFile file, String pathStr, PictureUploadInfo info) {
-        String fileName = file.getOriginalFilename();
-        fileName = fileName.replaceAll("\\\\", "/");
-        String[] arr = fileName.split("/");
-        if (arr.length < 2) {
-            if (!ObjectUtils.isEmpty(arr[0])) {
-                fileName = arr[0];
-            } else {
-                return null;
-            }
-        } else {
-            fileName = arr[arr.length - 1];
-        }
-        info.setName(fileName);
-        String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        path = path.replaceAll("\\\\", "/");
-        String filePath = path + superPath + pathStr + fileName;
-        info.setPath(filePath);
-        try (InputStream in = file.getInputStream();
-             OutputStream out = new FileOutputStream(filePath)) {
-            IOUtils.copy(in, out);
-        } catch (IOException e) {
-            log.error("Can't upload picture to: " + filePath, e);
-        }catch (Exception e){
-            log.error("Can't upload picture to: " + filePath, e);
-        }
-        return pathStr + fileName;
-    }
 
-    /**
-     * @param
-     * @return java.lang.String
-     * @note 删除图片
-     * @author WCF
-     * @time 2018/6/18 21:05
-     * @since v1.0
-     **/
-    private void deletePictures(String path) {
-        File file = new File(path);
-        if (file.exists()) {
-            file.delete();
-        }
-        return;
-    }
+
+
 }

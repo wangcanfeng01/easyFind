@@ -54,14 +54,24 @@ public interface WcfMetaInfoMapper {
     /**
      * @param info
      * @return void
-     * @note 根据标签或是关键词更新统计值
+     * @note 根据标签id更新信息
      * @author WCF
      * @time 2018/6/13 22:25
      * @since v1.0
      **/
-    @Update("UPDATE info_metas SET name=#{name},modify_time=#{modifyTime},create_time=#{createTime}," +
-            "description=#{description},count = #{count} WHERE id = #{id}")
+    @Update("UPDATE info_metas SET name=#{name},modify_time=#{modifyTime},description=#{description} WHERE id = #{id}")
     void updateMetaById(WcfMetaInfo info) throws Exception;
+    /**
+     * @param info
+     * @return void
+     * @note 根据标签id更新信息
+     * @author WCF
+     * @time 2018/6/13 22:25
+     * @since v1.0
+     **/
+    @Update("UPDATE info_metas SET name=#{name},modify_time=#{modifyTime}," +
+            "description=#{description},cover=#{cover} WHERE id = #{id}")
+    void updateMetaById2(WcfMetaInfo info) throws Exception;
 
     /**
      * @param time
@@ -87,5 +97,8 @@ public interface WcfMetaInfoMapper {
      **/
     @Delete("DELETE FROM info_metas WHERE id = #{id} AND count=0")
     void deleteMetaById(Integer id) throws Exception;
+
+
+
 
 }

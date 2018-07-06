@@ -3,8 +3,8 @@
  */
 $(".select2").select2({
     width: '100%',
-    maximumSelectionLength:1,
-    message:"只能选择一个分类"
+    maximumSelectionLength: 1,
+    message: "只能选择一个分类"
 });
 
 $("#keywords").tagsInput({
@@ -84,27 +84,27 @@ function markdown(textarea, toolbar, preview, isCode) {
  * @param status
  */
 function subArticle(status) {
-   var categories= $('#multiple-sel').val();
-   if(categories==null||categories==''){
-       tale.alertWarn('请选择分类标签');
-       return;
-   }
+    var categories = $('#multiple-sel').val();
+    if (categories == null || categories == '') {
+        tale.alertWarn('请选择分类标签');
+        return;
+    }
     $('#articleForm #categories').val(categories);
-    var title=$('#title').val();
-    if(title==null||title==''){
+    var title = $('#title').val();
+    if (title == null || title == '') {
         tale.alertWarn('请输入文章标题');
         return;
     }
 
-    var text=$('#text').val();
-   if(text==''||text==null){
-       tale.alertWarn('文章内容不能为空');
-       return;
-   }
+    var text = $('#text').val();
+    if (text == null || text == '') {
+        tale.alertWarn('文章内容不能为空');
+        return;
+    }
 
     var allowComment = $('#comment').prop("checked");
     var allowSee = $('#see').prop("checked");
-    var id = $('#id').val();
+
     if (allowComment && allowComment == true) {
         $('#articleForm #allowComment').val(allowComment);
     } else {
@@ -116,11 +116,17 @@ function subArticle(status) {
     } else {
         $('#articleForm #allowSee').val('private');
     }
-
     var url;
-    if (id == '') {
+    //获取文章状态
+    var isSave;
+    var articleStatus = $('#articleForm #status').val();
+    if (articleStatus == null || articleStatus == '') {
         url = '/read/admin/article/write';
     } else {
+        if(status==null||status==''){
+            status=articleStatus;
+            isSave=true;
+        }
         url = '/read/admin/article/modify';
     }
     $('#articleForm #status').val(status);
@@ -135,7 +141,11 @@ function subArticle(status) {
                     text: '文章发布成功',
                     then: function () {
                         setTimeout(function () {
-                            window.location.href = '/read/admin/management';
+                            if (isSave) {
+                                window.location.reload();
+                            } else {
+                                window.location.href = '/read/admin/management';
+                            }
                         }, 500);
                     }
                 });

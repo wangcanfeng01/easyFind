@@ -1,7 +1,9 @@
 package com.wcf.hellohome.common.api;
 
+import com.wcf.hellohome.common.response.BaseResponse;
 import com.wcf.hellohome.common.utils.MD5Utils;
 import com.wcf.hellohome.exception.PgSqlException;
+import com.wcf.hellohome.exception.UserException;
 import com.wcf.hellohome.read.service.WcfOperationLogService;
 import com.wcf.hellohome.user.model.UserDetailsInfo;
 import com.wcf.hellohome.user.model.UserInfo;
@@ -48,18 +50,23 @@ public class UserRestAPI {
      * @Description 注册新用户
      **/
     @PostMapping("/register")
-    public boolean register(HttpServletRequest request) {
+    public BaseResponse register(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         password = MD5Utils.encode(password);
         UserInfo info = new UserInfo(username, password);
         try {
             operationLogService.insertLog("新用户注册", request.getRemoteAddr(), username);
-            return userService.addNewUser(info);
+            boolean success = userService.addNewUser(info);
+            if (success) {
+                return BaseResponse.ok();
+            }
         } catch (PgSqlException e) {
-            return false;
+            return BaseResponse.error(e);
+        } catch (UserException e) {
+            return BaseResponse.error(e);
         }
-
+        return BaseResponse.error();
     }
 
     /**

@@ -77,9 +77,9 @@ public class IndexPageController {
     @GetMapping("/show/files/{search}")
     public String getFiles(HttpServletRequest request,
                            @PathVariable("search") String search, Model model) {
-        if (ObjectUtils.isEmpty(request.getUserPrincipal())||!request.getUserPrincipal().getName().equals("wcf")) {
-            throw new WCFAuthenticationException("没有权限");
-        }
+//        if (ObjectUtils.isEmpty(request.getUserPrincipal())||!request.getUserPrincipal().getName().equals("wcf")) {
+//            throw new WCFAuthenticationException("没有权限");
+//        }
         FindResourceFile findResourceFile = new FindResourceFile();
         String uri = "error/404";
         try {

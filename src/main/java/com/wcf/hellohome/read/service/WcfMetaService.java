@@ -22,7 +22,7 @@ public interface WcfMetaService {
      * @time 2018/6/14 22:00
      * @since v1.0
      **/
-    void insertMeta(String name, String type, String description) throws PgSqlException;
+    void insertMeta(String name, String type, String description,String fileLink) throws PgSqlException;
 
     /**
      * @param name
@@ -79,6 +79,19 @@ public interface WcfMetaService {
      * @since v1.0
      **/
     void updateMetaInfoById(String name, String description, Integer id) throws PgSqlException;
+
+    /**
+     * @param name
+     * @param description
+     * @param fileLink
+     * @param id
+     * @return void
+     * @note 更新meta信息，包含图片
+     * @author WCF
+     * @time 2018/6/25 22:21
+     * @since v1.0
+     **/
+    void updateMetaInfoById(String name, String description, String fileLink, Integer id) throws PgSqlException;
 
     /**
      * @param id

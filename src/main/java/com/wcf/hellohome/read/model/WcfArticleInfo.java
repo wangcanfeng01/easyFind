@@ -81,6 +81,12 @@ public class WcfArticleInfo implements Serializable {
      */
     private String allowSee;
 
+    /**
+     * 文章删除标志
+     * @return
+     */
+    private Short deleteFlag;
+
     public Integer getId() {
         return id;
     }
@@ -207,5 +213,13 @@ public class WcfArticleInfo implements Serializable {
 
     public void setStars(Integer stars) {
         this.stars = stars;
+    }
+
+    public Short getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Short deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 }

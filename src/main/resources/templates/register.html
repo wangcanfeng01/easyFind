@@ -82,19 +82,17 @@
                         "password": password
                     },
                     function (data) {
-                        if (data) {
+                        if (data && data.success) {
                             tale.alertOk("注册成功");
                             setTimeout(function () {
                                 window.location.href = "/login";
                             }, 1000);
                         } else {
-                            tale.alertError("用户已经被注册");
+                            tale.alertError(data.msg);
                         }
                     });
-            }
-            ;
-        }
-        ;
+            };
+        };
     });
 </script>
 </body>

@@ -189,6 +189,24 @@ public class WcfArticleServiceImpl implements WcfArticleService {
     }
 
     /**
+     * @param id
+     * @return void
+     * @note 根据id删除文章(伪删除)
+     * @author WCF
+     * @time 2018/6/13 22:11
+     * @since v1.0
+     **/
+    @Override
+    public void deleteArticleById2(Integer id, Integer delete) throws PgSqlException {
+        try {
+            articleInfoMapper.deleteArticleById2(id,delete);
+        } catch (Exception e) {
+            log.error(ErrorMessage.DELETE_ARTICLE_ERROR,e);
+            throw new PgSqlException(ErrorMessage.DELETE_ARTICLE_ERROR);
+        }
+    }
+
+    /**
      *@note 统计对应分类的文章总数
      *@author WCF
      *@time 2018/6/14 0:13
@@ -238,6 +256,24 @@ public class WcfArticleServiceImpl implements WcfArticleService {
             return articleInfoMapper.insertArticle(articleInfo);
         } catch (Exception e) {
             log.error(ErrorMessage.INSERT_ARTICLE_ERROR,e);
+            throw new PgSqlException(ErrorMessage.INSERT_ARTICLE_ERROR);
+        }
+    }
+
+    /**
+     * @param articleInfo
+     * @return int
+     * @note 创建新的文章
+     * @author WCF
+     * @time 2018/6/13 22:12
+     * @since v1.0
+     **/
+    @Override
+    public void createArticle(WcfArticleInfo articleInfo) throws PgSqlException {
+        try {
+             articleInfoMapper.createArticle(articleInfo);
+        } catch (Exception e) {
+            log.error(ErrorMessage.UPDATE_ARTICLE_ERROR,e);
             throw new PgSqlException(ErrorMessage.INSERT_ARTICLE_ERROR);
         }
     }

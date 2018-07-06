@@ -2,6 +2,7 @@ package com.wcf.hellohome.user.service.impl;
 
 import com.wcf.hellohome.common.constant.ErrorMessage;
 import com.wcf.hellohome.exception.PgSqlException;
+import com.wcf.hellohome.exception.UserException;
 import com.wcf.hellohome.user.dao.UserInfoMapper;
 import com.wcf.hellohome.user.model.UserInfo;
 import com.wcf.hellohome.user.service.WcfUserService;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Log4j2
 public class WcfUserServiceImpl implements WcfUserService {
+
     @Autowired
     private UserInfoMapper mapper;
 
@@ -30,7 +32,7 @@ public class WcfUserServiceImpl implements WcfUserService {
      * @since v1.0
      **/
     @Override
-    public boolean addNewUser(UserInfo userInfo) throws PgSqlException {
+    public boolean addNewUser(UserInfo userInfo) throws PgSqlException,UserException {
         //判断这个用户是否存在
         UserInfo user = null;
         try {
@@ -41,7 +43,7 @@ public class WcfUserServiceImpl implements WcfUserService {
         }
         if (null != user) {
             log.error("该用户已经存在");
-            return false;
+           throw new UserException(ErrorMessage.USER_ALREADY_EXIST);
         }
         int result = 0;
         try {

@@ -13,6 +13,9 @@ public class ArticleProvider {
     public String updateArticle(WcfArticleInfo articleInfo){
         String sql= new SQL() {{
             UPDATE("info_article");
+            if(!ObjectUtils.isEmpty(articleInfo.getModifyTime())){
+                SET(" modify_time = '"+articleInfo.getModifyTime()+"'");
+            }
             if(!ObjectUtils.isEmpty(articleInfo.getTitle())){
                 SET(" title = '"+articleInfo.getTitle()+"'");
             }
@@ -20,7 +23,9 @@ public class ArticleProvider {
                 SET(" status = '"+articleInfo.getStatus()+"'");
             }
             if(!ObjectUtils.isEmpty(articleInfo.getText())){
-                SET(" text = '"+articleInfo.getText()+"'");
+                String text=articleInfo.getText();
+               text=text.replaceAll("'", "''");
+                SET(" text = '"+text+"'");
             }
             if(!ObjectUtils.isEmpty(articleInfo.getKeywords())){
                 SET(" keywords = '"+articleInfo.getKeywords()+"'");

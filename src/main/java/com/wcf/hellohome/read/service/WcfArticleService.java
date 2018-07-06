@@ -3,6 +3,8 @@ package com.wcf.hellohome.read.service;
 import com.github.pagehelper.PageInfo;
 import com.wcf.hellohome.exception.PgSqlException;
 import com.wcf.hellohome.read.model.WcfArticleInfo;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * @author WCF
@@ -91,12 +93,22 @@ public interface WcfArticleService {
     /**
      * @param articleId
      * @return void
-     * @note 通过文章主键删除文章
+     * @note 通过文章id主键删除文章
      * @author WCF
      * @time 2018/6/14 21:55
      * @since v1.0
      **/
     void deleteArticleById(Integer articleId) throws PgSqlException;
+
+    /**
+     * @param id
+     * @return void
+     * @note 根据id删除文章(伪删除)
+     * @author WCF
+     * @time 2018/6/13 22:11
+     * @since v1.0
+     **/
+    void deleteArticleById2(Integer id, Integer delete) throws PgSqlException;
 
     /**
      * @param categories
@@ -127,6 +139,17 @@ public interface WcfArticleService {
      * @since v1.0
      **/
     int insertArticle(WcfArticleInfo articleInfo) throws PgSqlException;
+
+
+    /**
+     * @param articleInfo
+     * @return int
+     * @note 创建新的文章
+     * @author WCF
+     * @time 2018/6/13 22:12
+     * @since v1.0
+     **/
+    void createArticle(WcfArticleInfo articleInfo) throws PgSqlException;
 
     /**
      * @param articleInfo

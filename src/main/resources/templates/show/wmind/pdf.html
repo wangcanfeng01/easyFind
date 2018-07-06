@@ -7,52 +7,50 @@
     <script src="/webjars/pdf-js/build/pdf.js"></script>
 </head>
 <body style="background-color: #5e5e5e">
-
-<div th:insert="~{default/header::nav}"><span class="sr-only">导航栏目</span></div>
-<script type="text/javascript">
-    var text = document.getElementById("title").innerText;
-    var url = '/files/' + text + '.pdf';
-
-    PDFJS.workerSrc = '/webjars/pdf-js/build/pdf.worker.js';
-
-    // Asynchronous download of PDF
-    var loadingTask = PDFJS.getDocument(url);
-    loadingTask.promise.then(function (pdf) {
-        console.log('PDF loaded');
-
-        // Fetch the first page
-        var pageNumber = 1;
-        for (pageNumber; pageNumber <= pdf.numPages; pageNumber++) {
-            pdf.getPage(pageNumber).then(function (page) {
-                console.log('Page loaded');
-
-                var scale = 1.5;
-                var viewport = page.getViewport(scale);
-
-                // Prepare canvas using PDF page dimensions
-                var canvas = document.createElement('canvas');
-                var context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                var div = document.getElementById("my-div");
-                div.appendChild(canvas);
-                // Render PDF page into canvas context
-                var renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-                var renderTask = page.render(renderContext);
-                renderTask.then(function () {
-                    console.log('Page rendered');
-                });
-            });
-        }
-    }, function (reason) {
-        // PDF loading error
-        console.error(reason);
-    });
-</script>
 <div style="text-align: center" id="my-div">
+    <script type="text/javascript">
+        var text = document.getElementById("title").innerText;
+        var url = '/files/' + text + '.pdf';
+
+        PDFJS.workerSrc = '/webjars/pdf-js/build/pdf.worker.js';
+
+        // Asynchronous download of PDF
+        var loadingTask = PDFJS.getDocument(url);
+        loadingTask.promise.then(function (pdf) {
+            console.log('PDF loaded');
+
+            // Fetch the first page
+            var pageNumber = 1;
+            for (pageNumber; pageNumber <= pdf.numPages; pageNumber++) {
+                pdf.getPage(pageNumber).then(function (page) {
+                    console.log('Page loaded');
+
+                    var scale = 1.5;
+                    var viewport = page.getViewport(scale);
+
+                    // Prepare canvas using PDF page dimensions
+                    var canvas = document.createElement('canvas');
+                    var context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    var div = document.getElementById("my-div");
+                    div.appendChild(canvas);
+                    // Render PDF page into canvas context
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    var renderTask = page.render(renderContext);
+                    renderTask.then(function () {
+                        console.log('Page rendered');
+                    });
+                });
+            }
+        }, function (reason) {
+            // PDF loading error
+            console.error(reason);
+        });
+    </script>
 </div>
 </body>
 </html>

@@ -570,7 +570,7 @@ ul.actions.vertical.small li:first-child {
 .post > a.image.featured {
     overflow: hidden;
     width: 100%;
-    height: auto;
+    height: 35em;
     border: 1px solid black;
     border-radius: 14px;
 }

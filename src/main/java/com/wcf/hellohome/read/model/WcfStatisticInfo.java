@@ -23,4 +23,9 @@ public class WcfStatisticInfo {
      * 总点击次数
      */
     private Long hits;
+
+    /**
+     * 所有文章字数
+     */
+    private Long words;
 }

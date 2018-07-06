@@ -15,30 +15,30 @@
         <div th:insert="~{show/read/left::blog-left('list')}"></div>
         <div class="read-management-container">
             <div class="col-md-12">
-                <h4 th:text="${null==article}?'文章发布':'编辑文章'"></h4>
+                <h4 th:text="${article.status==null}?'文章发布':'编辑文章'"></h4>
             </div>
             <div class="col-md-12 mt-20">
                 <form id="articleForm" role="form" novalidate="novalidate">
-                    <input type="hidden" name="id" id="id" th:value="${article!=null}?${article.id}:''">
+                    <input type="hidden" name="id" id="id" th:value="${article.id}">
                     <input type="hidden" name="categories" id="categories"/>
-                    <input type="hidden" name="status" id="status"/>
+                    <input type="hidden" name="status" id="status" th:value="${article.status!=null and article.status!=''}?${article.status}:''"/>
                     <input type="hidden" name="allowComment" id="allowComment"/>
                     <input type="hidden" name="allowSee" id="allowSee"/>
                     <div class="form-group col-md-12 title-categories">
                         <div class="col-md-4">
                             <input type="text" class="form-control wcf-input" placeholder="请输入文章标题"
                                    name="title" id="title" required="required" aria-required="true"
-                                   th:value="${article!=null}?${article.title}:''"/>
+                                   th:value="${article.title}"/>
                         </div>
                         <div class="col-md-4">
                             <select id="multiple-sel" class="select2 form-control" multiple="multiple"
                                     required="required" aria-required="true" data-placeholder="请选择分类...">
-                                <th:block th:if="${article==null and null != categories}">
+                                <th:block th:if="${ null != categories}">
                                     <th:block th:each="category : ${categories}">
                                         <option th:value="${category.name}" th:text="${category.name}"></option>
                                     </th:block>
                                 </th:block>
-                                <th:block th:if="${article!=null and null != categories}">
+                                <th:block th:if="${null != categories}">
                                     <th:block th:each="category : ${categories}">
                                         <option th:value="${category.name}" th:text="${category.name}"
                                                 th:selected="${article.categories==category.name}?true:false"></option>
@@ -52,7 +52,7 @@
                             <fieldset class="wcf-fieldset">
                                 <legend class="wcf-legend">关键字</legend>
                                 <input name="keywords" id="keywords" type="text" class="wcf-input-s"
-                                       placeholder="请输入文章关键字" th:value="${article!=null}?${article.keywords}:''"/>
+                                       placeholder="请输入文章关键字" th:value="${article.keywords!=null}?${article.keywords}:''"/>
                             </fieldset>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                         <div class="col-md-8 markdown">
                                 <textarea style="height: 450px" autocomplete="off" id="text"
                                           name="text" class="markdown-textarea"
-                                          th:utext="${article!=null}?${article.text}:''"></textarea>
+                                          th:utext="${article.text!=null}?${article.text}:''"></textarea>
                         </div>
                     </div>
 
@@ -71,14 +71,14 @@
                     <div class="col-md-12">
                         <div class="form-group col-md-2 col-sm-4">
                             <input type="checkbox"
-                                   th:checked="${article!=null and article.allowSee=='private'}?false:true"
+                                   th:checked="${article.allowSee=='private'}?false:true"
                                    data-toggle="toggle" id="see"
                                    name="see" data-on="所有人可见" data-off="仅作者可见"
                                    data-onstyle="success" data-offstyle="danger">
                         </div>
                         <div class="form-group col-md-2 col-sm-4">
                             <input type="checkbox"
-                                   th:checked="${article!=null and article.allowComment==false}?false:true"
+                                   th:checked="${article.allowComment==false}?false:true"
                                    data-toggle="toggle" id="comment"
                                    name="comment"
                                    data-on="允许评论" data-off="禁止评论"

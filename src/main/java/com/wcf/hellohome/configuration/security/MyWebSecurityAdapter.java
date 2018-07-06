@@ -68,7 +68,7 @@ public class MyWebSecurityAdapter extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/read/all/**").permitAll()
+                .antMatchers("/","/show/files/**", "/read/all/**").permitAll()
 //                .antMatchers("/read/admin/**").hasRole("11")
                 .antMatchers("/login").permitAll()
                 .antMatchers("/user/**", "/register").permitAll()

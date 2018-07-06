@@ -57,10 +57,14 @@ public class PersonalController extends BaseController {
             List<WcfArticleInfo> articles = statisticService.getRecentArticles(10);
             for (WcfArticleInfo articleInfo : articles) {
                 String text = articleInfo.getText();
+                if(null==text){
+                    text="";
+                }
                 if (text.length() > 150) {
                     text = text.substring(0, 150);
+                }else {
+                    text += ".....";
                 }
-                text += ".....";
                 articleInfo.setText(text);
             }
             request.setAttribute("articles", articles);

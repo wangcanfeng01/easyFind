@@ -37,7 +37,14 @@ public enum ErrorMessage {
     INSERT_PICTURE_ERROR("00000015", "Insert operation data into database failed","插入图片异常"),
     SELECT_PICTURE_ERROR("00000016", "Select operation data from database failed","搜索图片异常"),
     UPDATE_PICTURE_ERROR("00000017", "Update operation data into database failed","更新图片异常"),
-    DELETE_PICTURE_ERROR("00000018", "Delete operation data from database failed","删除图片异常");
+    DELETE_PICTURE_ERROR("00000018", "Delete operation data from database failed","删除图片异常"),
+
+    INSERT_VERSION_ERROR("00000019", "Insert operation data into database failed","插入版本异常"),
+    SELECT_VERSION_ERROR("0000001A", "Select operation data from database failed","搜索版本异常"),
+    UPDATE_VERSION_ERROR("0000001B", "Update operation data into database failed","更新版本异常"),
+    DELETE_VERSION_ERROR("0000001C", "Delete operation data from database failed","删除版本异常"),
+
+    USER_ALREADY_EXIST("00010001", "The user name is already exist","用户名已存在");
 
 
     ErrorMessage(String code, String reason, String chinese) {

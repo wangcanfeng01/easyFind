@@ -1,4 +1,4 @@
-package com.wcf.hellohome.common.controller.info;
+package com.wcf.hellohome.about.controller;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;

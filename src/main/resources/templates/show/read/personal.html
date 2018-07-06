@@ -89,7 +89,7 @@
                 <div id="main">
                     <!-- Post -->
                     <article class="post" th:each="article:${articles}">
-                        <a th:href="${utils.articleLink(article.titleSimple)}" class="image featured">
+                        <a th:href="${utils.articleLink(article.titleSimple)}" target="_blank" class="image featured">
                             <th:block th:if="${article.cover==null}">
                                 <img src="/image/article/cover/default.jpg" alt=""/>
                             </th:block>
@@ -99,7 +99,8 @@
                         </a>
                         <header>
                             <div class="title">
-                                <h2><a href="#" th:text="${article.title}"></a></h2>
+                                <h2><a th:href="${utils.articleLink(article.titleSimple)}" target="_blank"
+                                       th:text="${article.title}"></a></h2>
                                 <p th:text="${article.keywords}"></p>
                             </div>
                         </header>
@@ -107,7 +108,7 @@
                         <footer>
                             <ul class="actions">
                                 <li>
-                                    <a th:href="${utils.articleLink(article.titleSimple)}"
+                                    <a th:href="${utils.articleLink(article.titleSimple)}" target="_blank"
                                        class="button-detail">阅读全文</a>
                                 </li>
                             </ul>

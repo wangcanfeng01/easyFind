@@ -14,8 +14,6 @@ import com.wcf.hellohome.read.model.WcfMetaInfo;
 import com.wcf.hellohome.read.service.WcfArticleService;
 import com.wcf.hellohome.read.service.WcfMetaService;
 import com.wcf.hellohome.read.service.WcfOperationLogService;
-import com.wcf.hellohome.user.model.UserInfo;
-import com.wcf.hellohome.user.service.WcfUserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,8 +42,6 @@ public class ArticleActionController extends BaseController {
     @Autowired
     private WcfMetaService metaService;
 
-    @Autowired
-    private WcfUserService userService;
 
     /**
      * @param request
@@ -57,12 +53,30 @@ public class ArticleActionController extends BaseController {
      **/
     @GetMapping("/article/write")
     public String createArticle(HttpServletRequest request) {
+        String userName = super.getUserName(request);
         List<WcfMetaInfo> categories = null;
         try {
             categories = metaService.getMetasByType(WCFConst.Types.CATEGORY);
         } catch (PgSqlException e) {
             return super.errorTransfer(request, e);
         }
+        WcfArticleInfo articleInfo = new WcfArticleInfo();
+        articleInfo.setAuthor(userName);
+        articleInfo.setCommentsNum(0);
+        articleInfo.setTitleSimple(UuidUtils.generateShortUuid());
+        articleInfo.setModifyTime(DateUtils.getCurrentUnixTime());
+        articleInfo.setCreateTime(DateUtils.getCurrentUnixTime());
+        articleInfo.setHits(0);
+        articleInfo.setStars(0);
+        articleInfo.setText("");
+        articleInfo.setTitle(DateUtils.now());
+        articleInfo.setDeleteFlag((short)0);
+        try {
+            articleService.insertArticle(articleInfo);
+        } catch (PgSqlException e) {
+            return errorTransfer(request,e);
+        }
+        request.setAttribute("article", articleInfo);
         request.setAttribute("categories", categories);
         return super.readTransfer("write");
     }
@@ -79,29 +93,11 @@ public class ArticleActionController extends BaseController {
     @PostMapping("/article/write")
     @ResponseBody
     public BaseResponse publishArticle(WcfArticleInfo articleInfo, HttpServletRequest request) {
-
-        String userName = super.getUserName(request);
+        if (ObjectUtils.isEmpty(articleInfo.getStatus())) {
+            articleInfo.setStatus("draft");
+        }
         try {
-            if (WCFConst.NOT_LOGIN_USER.equals(userName)) {
-                return BaseResponse.error("请登录后重试");
-            } else {
-                UserInfo userInfo = userService.getByUsername(userName);
-                if (ObjectUtils.isEmpty(userInfo)) {
-                    return BaseResponse.error("请登录后重试");
-                } else {
-                    articleInfo.setAuthor(userName);
-                    articleInfo.setCommentsNum(0);
-                    articleInfo.setTitleSimple(UuidUtils.generateShortUuid());
-                    articleInfo.setModifyTime(DateUtils.getCurrentUnixTime());
-                    articleInfo.setCreateTime(DateUtils.getCurrentUnixTime());
-                    articleInfo.setHits(0);
-                    articleInfo.setStars(0);
-                    if (ObjectUtils.isEmpty(articleInfo.getStatus())) {
-                        articleInfo.setStatus("draft");
-                    }
-                }
-            }
-            articleService.insertArticle(articleInfo);
+            articleService.createArticle(articleInfo);
             //更新分类信息
             WcfMetaInfo category = metaService.getMetasByNameAndType(articleInfo.getCategories(), WCFConst.Types.CATEGORY);
             if (null != category) {
@@ -145,7 +141,6 @@ public class ArticleActionController extends BaseController {
      **/
     @GetMapping("/article/write/{simple}")
     public String editArticle(HttpServletRequest request, @PathVariable String simple) {
-
         String userName = getUserName(request);
         try {
             WcfArticleInfo articleInfo = articleService.getContent(simple);
@@ -282,13 +277,13 @@ public class ArticleActionController extends BaseController {
 
 
     /**
-     *@note 通过id删除文章
-     *@author WCF
-     *@time 2018/6/15 19:07
-     *@since v1.0
      * @param id
-    * @param request
-     *@return com.wcf.hellohome.common.response.BaseResponse
+     * @param request
+     * @return com.wcf.hellohome.common.response.BaseResponse
+     * @note 通过id删除文章
+     * @author WCF
+     * @time 2018/6/15 19:07
+     * @since v1.0
      **/
     @DeleteMapping("/article/delete/{id}")
     @ResponseBody
@@ -300,7 +295,24 @@ public class ArticleActionController extends BaseController {
             if (!articleInfo.getAuthor().equals(userName)) {
                 return BaseResponse.error("不是作者不能删除文章");
             }
-            articleService.deleteArticleById(id);
+            articleService.deleteArticleById2(id,WCFConst.DELETE_FLAG);
+            if(!ObjectUtils.isEmpty(articleInfo.getKeywords())){
+                String[] keywords = articleInfo.getKeywords().split(",");
+                //减少关键词的统计
+                for (String key : keywords) {
+                    WcfMetaInfo keyword = metaService.getMetasByNameAndType(key, WCFConst.Types.KEYWORD);
+                    if (null != keyword) {
+                        keyword.setCount(keyword.getCount() - 1);
+                        keyword.setModifyTime(DateUtils.getCurrentUnixTime());
+                        metaService.updateMetaById(keyword);
+                    }
+                }
+            }
+            if(!ObjectUtils.isEmpty(articleInfo.getCategories())){
+                //减少分类的统计
+                WcfMetaInfo category = metaService.getMetasByNameAndType(articleInfo.getCategories(), WCFConst.Types.CATEGORY);
+                metaService.updateMetaCountById(category.getCount() - 1, category.getId());
+            }
             operationLogService.insertLog("删除文章",
                     request.getRemoteAddr(), getUserName(request));
         } catch (PgSqlException e) {

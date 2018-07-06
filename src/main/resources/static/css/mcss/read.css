@@ -394,7 +394,7 @@ Float clearing goodness from Handcrafted CSS book ------------------------------
 /*页脚换页功能*/
 /*页脚换页功能*/
 .lists-navigator {
-    margin: 30px 0 35px
+    margin: 30px 0 35px 0;
 }
 
 .lists-navigator ol {
@@ -409,9 +409,14 @@ Float clearing goodness from Handcrafted CSS book ------------------------------
     color: #5f5f5f
 }
 
+.lists-navigator ol li button {
+    padding: 6px 0px;
+}
+
 .lists-navigator ol li a {
     font-size: 14px;
-    padding: 10px 15px;
+    margin: 0;
+    padding: 9px 35px;
     color: #000000;
     text-decoration: none;
 }
@@ -1463,6 +1468,19 @@ body {
     height: 24px;
     border: 1px solid #cdcdcd;
     width: 320px;
+}
+
+.meta-file{
+    height: 34px;
+    filter: alpha(opacity:0);
+    opacity: 0;
+    width: 350px;
+    margin-left: -352px;
+    margin-right: 0px;
+}
+.meta-pic{
+    height: 3em;
+    width: 5em;
 }
 
 

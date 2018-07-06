@@ -1550,19 +1550,21 @@ else
                 //     text = 'http://' + text;
             }
             dialog.parentNode.removeChild(dialog);
-            if (image) {
-                if (text != null && text.indexOf("\\")) {
-                    var arr = text.split("\\");
-                    var length = arr.length;
-                    if (length < 2) {
-                        text = text;
-                    } else {
-                        text = "/image/article/upload/" + arr[length - 1];
-                    }
-                }
-            }
+
 
             if (success && success.success) {
+                if (image) {
+                    // if (text != null && text.indexOf("\\")) {
+                    //     var arr = text.split("\\");
+                    //     var length = arr.length;
+                    //     if (length < 2) {
+                    //         text = text;
+                    //     } else {
+                    //         text = "/image/article/upload/" + arr[length - 1];
+                    //     }
+                    // }
+                    text=success.msg;
+                }
                 callback(text);
             } else if (success != null && success.msg != null) {
                 callback(success.msg);
@@ -1593,7 +1595,8 @@ else
                 input.name = "textField";
                 input.id = "textField";
                 input.className = "md-textfield";
-                form.innerHTML = "<input type='file' name='file' class='md-file' id='file' " +
+                form.innerHTML = "<input type='hidden' name='idField' id='idField'/>" +
+                    "<input type='file' name='file' class='md-file' id='file' " +
                     " onchange=\"document.getElementById('textField').value=this.value\" />";
             } else {
                 input.type = "input";
@@ -1608,6 +1611,8 @@ else
             okButton.style.marginTop = '10px';
             //增加一个提交功能
             okButton.onclick = function () {
+                 var id = $('#id').val();
+                $('#uploadForm #idField').val(id);
                 $.ajax({
                     type: 'POST',
                     url: "/read/admin/article/add/picture",
